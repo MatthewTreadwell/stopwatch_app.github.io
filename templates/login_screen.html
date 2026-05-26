@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Project Stopwatch Tool</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="top_bar">
+        <img src="{{ url_for('static', filename='Icon.webp') }}" width=30px height=30px>
+    </div>
+    <h1>To access your project dashboard, <br>please create an account or log in to your existing account</h1>
+    <br>
+    <div class="account_buttons">
+        <button onclick="document.getElementById('screen1').style.display='block';
+        document.getElementById('screen2').style.display='none'" style="margin-right:9px">Create Account</button>
+        <button onclick="document.getElementById('screen2').style.display='block';
+        document.getElementById('screen1').style.display='none'">Log In</button>
+    </div>
+
+    <div class="login_buttons" id="screen1" style="display:none"> 
+        <form action="/create_account" method="POST">
+            <h5>Create a unique username for your account</h5>
+            <input type="text" name="new_username">
+            <h5>Create a password for your account</h5>
+            <input type="text" name="new_password"><br><br>
+            <button type="submit">Submit</button>
+        </form>
+    </div>
+
+    {% if userError %}
+        <br><p style="color:red">{{ userError }}</p>
+    {% endif %}
+
+    <div class="login_buttons" id="screen2" style="display:none">
+        <form action="/login" method="POST">
+            <h5>Enter your username</h5>
+            <input type="text" name="user">
+            <h5>Enter your password</h5>
+            <input type="text" name="pass"><br><br>
+            <button type="submit">Submit</button>
+        </form> 
+    </div>
+    {% if passError %}
+        <br><p style="color:red">{{ passError }}</p>
+    {% endif %} 
+    {% if userNotFoundError %}
+        <br><p style="color:red">{{ userNotFoundError }}</p>
+    {% endif %}
+</body>
+</html>
+

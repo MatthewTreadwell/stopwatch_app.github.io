@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Project Dashboard</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+<div class="top_bar"><img src="{{ url_for('static', filename='Icon.webp') }}" width=30px height=30px><b style="margin-left: auto; margin-right: 45px;">{{ username }}</b></div>
+<div class="page_title">
+    <div class="divider"><h1>Stopwatch Web App</h1></div>
+    <p>Have you ever wondered how much total time you spend on your projects?<br><i>Start timing your work to find out!</i></p>
+</div>
+<img src="{{ url_for('static', filename='Stopwatch.jpg') }}" width="350" height="350"><br>
+
+{% if confirmation %}
+        <div><i style="color:green">{{ confirmation }}</i></div>
+{% endif %}
+
+<div class="project_dash_divider">
+    <div></div>
+    <h2 class="dash_text">Project Dashboard</h2>
+    <a id="work_log_button" href = '/work_log'>
+        <p>View/Export Work Log</p>
+        <img src="{{ url_for('static', filename='Table.png') }}" width=30px height=30px style="margin-left: 10px;">
+    </a>
+</div>
+<p>My projects:</p>
+<div class="reel">
+    {% for project in projects %}
+        {% set proj_name = project['name'] %}
+        <div class="project_tile" onclick="window.location.href = '/stopwatch/{{ loop.index0 }}'">
+            <img src="{{ url_for('static', filename='Delete.png')}}" width="22" height="22"
+                onclick="event.stopPropagation(); if (confirm('Do you want to permanently delete your {{ proj_name }} project?')) {
+                    window.location.href = '/delete_project/{{ loop.index0 }}';
+                }">
+            <h4>{{ project['name'] }}</h4>
+            <p>Total time spent: {{ project["formatted_time"] }}</p>
+            <p>Number of work sessions: {{ project['work_sessions'] }}</p>
+        </div>
+    {% endfor %}
+</div>
+<div>
+    <form action="/create_new_project" method="POST">
+        <p>Enter the name of a new project here to create a new project</p>
+        <input type="text" name="name">
+        <button type="submit">Create project</button>
+    </form>
+</div>
+</body>
+</html>

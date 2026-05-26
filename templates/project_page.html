@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Stopwatch</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="top_bar"><img src="{{ url_for('static', filename='Icon.webp') }}" width=30px height=30px><b style="margin-left: auto; margin-right: 45px;">{{ username }}</b></div>
+    <div class="project_dash_divider" style="margin-top: 8px">
+        <div></div>
+        {% if additional_stopwatch %}
+            <script>
+            document.addEventListener("DOMContentLoaded", function() {
+                document.getElementById("start").disabled = true;
+                document.getElementById("stop").disabled = true;
+                document.getElementById("end_session").disabled = true;
+            });
+            </script>
+            <select name="project_selector">
+                <option value="-1">Choose a Project ...</option>
+                {% for p in project_choices %}
+                    <option value="{{ p }}">{{ p }}</option> 
+                {% endfor %}
+            </select>
+        {% else %}
+        <h2 class="project_page_title">{{ project['name'] }}</h2>   
+        {% endif %}
+        <div style="margin-left: auto; margin-right: 10px; max-width: 150px; max-height: 100px;">
+            <i style="font-size: 10px; line-height: 16px; font-family: Arial, sans-serif; display: block; max-width: 120px; justify-self: center;">Want to track another project at the same time?</i>
+            <a class="new_tab" target="_blank" href="/additional_stopwatch/{{ project_index }}">
+                <div style="display: flex; align-items: center;">
+                    <p style="margin: 0;">Click here to open another tab</p>
+                    <img src="{{ url_for('static', filename='Plus_icon.jpeg') }}" width="43" height="32" style="margin-left: 20px"></div>
+            </a>
+        </div>
+    </div>
+    <div>
+        <img class="clocks" id="img1" src="{{ url_for('static', filename='StillWatch.png') }}" width="300" height="298">
+        <img class="clocks" id="img2" src="{{ url_for('static', filename='GIFStopwatch.gif')}}" width="300" height="300" style="display:none;">
+    </div>
+    <div class="container">
+        <div id="time">
+            <span class="digit" id="hr">
+                00</span>
+            <span class="txt">Hr</span>
+            <span class="digit" id="min">
+                00</span>
+            <span class="txt">Min</span>
+            <span class="digit" id="sec">
+                00</span>
+            <span class="txt">Sec</span>
+        </div>
+        <div id="buttons">
+            <button class="btn" id="start" onclick="document.getElementById('img2').style.display='block';
+    document.getElementById('img1').style.display='none'">
+                Start</button>
+            <button class="btn" id="stop" onclick="document.getElementById('img1').style.display='block';
+    document.getElementById('img2').style.display='none'">
+                Stop</button>
+            <button class="btn" id="end_session" onclick="document.getElementById('img1').style.display='block';
+    document.getElementById('img2').style.display='none'">
+                End Session</button>
+            <br><br>
+            <button class="btn" id="return">
+                Return to Dashboard without Saving
+            </button>
+        </div>
+    </div>
+</body>
+<script>
+    let project_index = {{ project_index }};
+    const project_names  = {{ project_names | tojson }};
+    const additional_stopwatch = {{ additional_stopwatch | tojson }};
+</script>
+<script src="{{ url_for('static', filename='StopwatchLogic.js') }}"></script>
+</html>

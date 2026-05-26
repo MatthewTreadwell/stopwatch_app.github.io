@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Work Log</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="top_bar"><img src="{{ url_for('static', filename='Icon.webp') }}" width=30px height=30px><b style="margin-left: auto; margin-right: 45px;">{{ username }}</b></div>
+    <div></div>
+    <a class="return_button" href = '/dashboard_return'>Return to Project Dashboard</a>
+    <h2>Project Stats</h2>
+    <table>
+        <tr>
+            <th>Project Name</th>
+            <th>Total Work Time</th>
+            <th>Total Work Sessions</th>
+        </tr>
+        {% for project in projects %}
+         <tr>
+            <td>{{ project['name'] }}</td>
+            <td>{{ project['formatted_time'] }}</td>
+            <td>{{ project['work_sessions'] }}</td>
+         </tr>
+        {% endfor %}
+    </table>
+    <div class="export_buttons">
+        <a href="/export_stats_csv"><button style="margin-right: 6px;">Export to CSV</button></a>
+        <a href="/export_stats_pdf"><button>Export to PDF</button></a>
+    </div>
+    <h2>Work Log</h2>
+    <table>
+        <tr>
+            <th>Project Name</th>
+            <th>Session Date</th>
+            <th>Session Length</th>
+            <th>Cumulative Time</th>
+            <th>Project Session Number</th>
+        </tr>
+        {% for session in sessions %}
+            <tr>
+                <td>{{ session['name'] }}</td>
+                <td>{{ session['date'] }}</td>
+                <td>{{ session['length'] }}</td>
+                <td>{{ session['cumulative_time'] }}</td>
+                <td>{{ session['number'] }}</td>
+            </tr>
+        {% endfor %}
+    </table>
+    <div class="export_buttons">
+        <a href="/export_log_csv"><button style="margin-right: 6px;">Export to CSV</button></a>
+        <a href="/export_log_pdf"><button>Export to PDF</button></a>
+    </div>
+</body>
+</html>
